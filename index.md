@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Toward Practical SDDM Linear Equation Solvers: Experimental Evaluation
+# Robust and Practical Solution of Laplacian Equations by Approximate Elimination: Experimental Evaluation
 
 Our paper [Robust and Practical Solution of Laplacian Equations by Approximate Elimination (arXiv link, TODO)](https://example.com/) introduces a new Laplacian linear equation solver, ApproxChol, which is part of the [Laplacians.jl](https://github.com/danspielman/Laplacians.jl/) package.
 
@@ -12,5 +12,3 @@ Our experiments and results are described in the [paper (arXiv link, TODO)](http
 This repository provides the test suite code we used to run our experiments. The accompanying website is intended to help readers understand and reproduce our experiments on SDDM linear equation solvers.
 
 Read our [tutorial](Tutorial.md) to get started.
-
-<!-- *TODO* move the code from lapsolveeval repo to here -->
