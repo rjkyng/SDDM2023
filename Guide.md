@@ -117,13 +117,13 @@ This version which we tested is linked below.
 We provide scripts that repeat experiments on all solvers that we tested. We remark that, when tested on Chimera Laplacians with non-unit weights, PETSc crashed our server too often and its performances on these matrices are therefore omitted in the paper. When repeating our experiments, we suggest using the following script which tests all solvers except for PETSc:
 
 ```bash
-cd SDDM/performance-experiments
+cd SDDM2023/performance-experiments
 ./run_nopetsc.sh
 ```
 
 To repeat our experiments on all solvers including PETSc, you can use the following script at your own risk:
 
 ```bash
-cd SDDM/performance-experiments
+cd SDDM2023/performance-experiments
 ./run_all.sh
 ```

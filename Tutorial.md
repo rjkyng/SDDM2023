@@ -57,7 +57,7 @@ Please clone this repository. It contains the scripts to reproduce our experimen
 
     ```bash
     cd $HOME
-    git clone https://github.com/rjkyng/SDDM.git
+    git clone https://github.com/rjkyng/SDDM2023.git
     ```
 
 ## Data generation
@@ -109,11 +109,11 @@ SDDMs:
 
 ### SPE matrices
 
-We test the performance of the solvers on the SPE matrices, with the number of variables ranging from around 0.5 millions to 16 millions. You can download and unzip these matrices from the [Dropbox link](https://www.dropbox.com/s/7fp4yq69brcew8g/spe.zip?dl=0). These matrices are stored in the Matrix Market format. To reproduce our experiments, please store these matrix files in the folder `SDDM/matrix-files`
+We test the performance of the solvers on the SPE matrices, with the number of variables ranging from around 0.5 millions to 16 millions. You can download and unzip these matrices from the [Dropbox link](https://www.dropbox.com/s/7fp4yq69brcew8g/spe.zip?dl=0). These matrices are stored in the Matrix Market format. To reproduce our experiments, please store these matrix files in the folder `SDDM2023/matrix-files`
 
 ### IPM matrices
 
-We also provide the IPM matrices that we test our solvers' performance on. These matrices comes from running the interior point method on `Chimera graph` and `Spielman graph`. You can download and unzip these matrices from the [Dropbox link](https://www.dropbox.com/s/qvobilehu9vzeqm/ipmMat.zip?dl=0). Again, these matrices are stored in the Matrix Market format. To reproduce our experiments, please store these matrix files in the folder `SDDM/matrix-files`
+We also provide the IPM matrices that we test our solvers' performance on. These matrices comes from running the interior point method on `Chimera graph` and `Spielman graph`. You can download and unzip these matrices from the [Dropbox link](https://www.dropbox.com/s/qvobilehu9vzeqm/ipmMat.zip?dl=0). Again, these matrices are stored in the Matrix Market format. To reproduce our experiments, please store these matrix files in the folder `SDDM2023/matrix-files`
 ## Benchmarking Laplacians.jl
 
 In this seciton we only provide instructions on how 
@@ -125,6 +125,6 @@ We provide a simple script that is easy to run to repeat all our
 experiments on our solvers:
 
 ```bash
-cd SDDM/performance-experiments
+cd SDDM2023/performance-experiments
 ./run_ac.sh
 ```

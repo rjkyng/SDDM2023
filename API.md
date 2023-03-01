@@ -7,7 +7,7 @@ rank: 4
 # Examples and discussion of our APIs
 
 On this page, we discuss how to use our APIs provided
- in `Laplacians.jl` and `SDDM.git` to reproduce our experiments.
+ in `Laplacians.jl` and `SDDM2023.git` to reproduce our experiments.
 
 <!-- Below are the discussions on APIs -->
 
@@ -161,7 +161,7 @@ x = solver(b)
 
 ## Benchmarking
 
-We recommend you to benchmark the performances of our solvers through another interface that we provide at SDDM/julia-files/compareSolvers.jl. Again, you need to setup the solvers first.
+We recommend you to benchmark the performances of our solvers through another interface that we provide at `SDDM2023/julia-files/compareSolvers.jl`. Again, you need to setup the solvers first.
 
 ```julia
 ac_deg_sddm = function(M; verbose=false, args...)
