@@ -67,11 +67,6 @@ Please clone this repository. It contains the scripts to reproduce our experimen
 In our experiments, we tested the performance of the solvers on SDDM matrices from
 the SuiteSparse matrix collection. In addition, we also included matrices
 that are "approximately" SDDM, in the sense that they have positive diagonals, non-positive off diagonals and is symmetric, while not diagonally dominated but close.
-<!-- Github markdown does not support inline latex
-In particular, for such an $n\times n$ matrix $M$, if $\min_{i\in[n]}\lvert (M \mathbf{1})_i/M_{ii}\rvert\leq \epsilon$ for some small value $\epsilon$, then
-we say $M$ is "approximately" SDD. We call $\min_{i\in[n]}\lvert (M \mathbf{1})_i/M_{ii}\rvert$ the SDDness. In our experiments, we set $\epsilon$ to be ten times the
-machine epsilon. We excluded all matrices with less than 1000 non-zeros so that the
-overheads are negligible. The following are all the matrices that we included: -->
 
 "Approximate" SDDMs:
 

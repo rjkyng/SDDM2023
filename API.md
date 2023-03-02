@@ -105,13 +105,6 @@ it to the closest integer.
     graphs in 100 vertices. In our expeirments, we tested Sachdeva stars with k/2 leaves with leaves
     being complete graphs in k vertices, where k ranges from 100 and 800 with a step of 50.
 
-
-<!-- ## Saving the linear system to MAT file
-
-Actually we are not using the same mechanism here for different sovlers...
-
-Maybe we should only tell people how to run tests through our interface? -->
-
 ## Running our solvers
 
 First, set up the approximate Cholesky algorithm and solver. Suppose you are solving a linear system in `M`. If `M` is strictly SDDM, then:
