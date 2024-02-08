@@ -1,3 +1,4 @@
+
 load fromJulia.mat
 
 startTime = datestr(now);
@@ -6,6 +7,13 @@ bt = Inf;
 iter = Inf;
 relres = Inf;
 save toJulia st bt iter relres startTime
+
+
+% Add paths to rchol and rchol_lap
+rcholHome = getenv('RCHOL_HOME');
+
+addpath(fullfile(rcholHome, 'rchol'));
+addpath(fullfile(rcholHome, 'rchol_lap'));
 
 tic();
 n = length(la)
