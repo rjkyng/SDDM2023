@@ -193,7 +193,7 @@ Also compares them against the solvers we have in matlab, with a time limit of 1
 function testSddm(solvers, dic::Dict, sddmmat::SparseMatrixCSC{Tv,Ti}, b::Array{Tv,1};
    tol::Real = 1e-8, maxits = 1000, maxtime = 1000, verbose = false, testName = "",
    test_petsc_hypre = false, test_hypre = false, test_icc = false, test_cmg = false, 
-   test_lamg = false, tl_fac = 10) where {Tv,Ti}
+   test_lamg = false, test_rchol = false, tl_fac = 10) where {Tv,Ti}
  
     it = Int[1]
 
@@ -228,6 +228,10 @@ function testSddm(solvers, dic::Dict, sddmmat::SparseMatrixCSC{Tv,Ti}, b::Array{
     end
     if test_lamg
         push!(dic["names"], "lamg")
+    end
+
+    if test_rchol
+        push!(dic["names"], "rchol")
     end
 
     # if test_jlcmg
@@ -278,7 +282,7 @@ function testSddm(solvers, dic::Dict, sddmmat::SparseMatrixCSC{Tv,Ti}, b::Array{
 
     if tl == 0
         #error("tl is zero")
-        tl = 60 * 60 * 2
+        tl = 60 * 60 * 5
     end
 
     if test_petsc_hypre
@@ -329,6 +333,15 @@ function testSddm(solvers, dic::Dict, sddmmat::SparseMatrixCSC{Tv,Ti}, b::Array{
         pushSpeedResult!(dic, "lamg", ret)
     end
 
+    if test_rchol
+        if verbose
+            println("--------------")
+            println("rchol")
+        end
+        ret = timeLimitRchol(tl, sddmmat, b, verbose = true);
+        pushSpeedResult!(dic, "rchol", ret)
+    end
+
     # if test_jlcmg
     #     if verbose
     #         println("--------------")
@@ -349,7 +362,7 @@ Handles the case where the input matrix is not of full rank. The input matrix is
 function testLap(solvers, dic::Dict, a::SparseMatrixCSC{Tv,Ti}, b::Array{Tv,1};
     tol::Real = 1e-8, maxits = 1000, maxtime = 1000, verbose = false, testName = "",
     test_petsc_hypre = false, test_hypre = false, test_icc = false, test_cmg = false, 
-    test_lamg = false, tl_fac = 10) where {Tv,Ti}
+    test_lamg = false, test_rchol = false, tl_fac = 10) where {Tv,Ti}
     
     b = b .- mean(b)
     la = Laplacians.lap(a)
@@ -387,6 +400,10 @@ function testLap(solvers, dic::Dict, a::SparseMatrixCSC{Tv,Ti}, b::Array{Tv,1};
     end
     if test_lamg
         push!(dic["names"], "lamg")
+    end
+
+    if test_rchol
+        push!(dic["names"], "rchol")
     end
 
     # if test_jlcmg
@@ -434,7 +451,7 @@ function testLap(solvers, dic::Dict, a::SparseMatrixCSC{Tv,Ti}, b::Array{Tv,1};
 
     if tl == 0
         #error("tl is zero")
-        tl = 60 * 60 * 2
+        tl = 60 * 60 * 5
     end
 
     if test_petsc_hypre
@@ -483,6 +500,15 @@ function testLap(solvers, dic::Dict, a::SparseMatrixCSC{Tv,Ti}, b::Array{Tv,1};
         end
         ret = timeLimitLamg(tl, la, b, verbose = true);
         pushSpeedResult!(dic, "lamg", ret)
+    end
+
+    if test_rchol
+        if verbose
+            println("--------------")
+            println("rchol")
+        end
+        ret = timeLimitRchol(tl, la, b, verbose = true);
+        pushSpeedResult!(dic, "rchol", ret)
     end
 
     # if test_jlcmg
