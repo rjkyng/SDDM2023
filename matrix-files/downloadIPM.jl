@@ -24,13 +24,14 @@ for i in 1:5
         println("Current target eps $(curTargetEps)")
         println("---------------")
         for cnt in 1:6
+            M = nothing
             try
-                M = downloadSS("uc.i$(i).eps$(curTargetEps).$(cnt)"; false)
+                M = downloadSS("uc.i$(i).eps$(curTargetEps).$(cnt)"; remove=false)
             catch
                 println("For target eps $(curTargetEps), there is only $(cnt - 1) instances")
                 break
             end
-            if M == -1
+            if isnothing(M) || M == -1
                 println("Target eps $(curTargetEps), Laplacian $(cnt) failed to download.")
             end
         end
@@ -61,14 +62,14 @@ for k in 100:100:600
         println("---------------")
         println("i = $(i) started")
         println("---------------")
-
+        M = nothing
         try
-            M = downloadSS("sk$(k)i$(i)"; false)
+            M = downloadSS("sk$(k)i$(i)"; remove=false)
         catch
             println("For k = $(k), ipm in r-space with low eps only stored $(i-1) instances.")
             break
         end
-        if M == -1
+        if isnothing(M) || M == -1
             println("For k = $(k), Laplacian $(i) failed to download")
         end
     end
