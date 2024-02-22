@@ -9,6 +9,7 @@ save toJulia st bt iter relres startTime
 
 tic();
 pfun = cmg_sdd(la);
+% pfun = cmg_precondition(la);
 bt = toc();
 
 tic();
