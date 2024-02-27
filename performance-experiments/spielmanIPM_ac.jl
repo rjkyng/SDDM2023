@@ -91,15 +91,15 @@ for k in 100:100:600
         println("i = $(i) started")
         println("---------------")
 
-        try
-            lap = loadFromMM("sk$(k)i$(i)")
-        catch
+        filename = "../matrix-files/sk$(k)i$(i).mm"
+        if !isfile(filename)
             println("---------------")
             println("For k = $(k), ipm in r-space with low eps only stored $(i-1) instances.")
             println("i = $(i) finished")
             println("---------------")
             break
         end
+        lap = loadFromMM("sk$(k)i$(i)")
 
         a, _ = adj(lap)
         nv = size(a, 1)

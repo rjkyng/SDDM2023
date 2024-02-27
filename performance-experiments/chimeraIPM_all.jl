@@ -90,12 +90,12 @@ for i in 1:5
         println("Current target eps $(curTargetEps)")
         println("---------------")
         for cnt in 1:6
-            try
-                lap = loadFromMM("uc.i$(i).eps$(curTargetEps).$(cnt)")
-            catch
+            filename = "../matrix-files/uc.i$(i).eps$(curTargetEps).$(cnt).mm"
+            if !isfile(filename)
                 println("For target eps $(curTargetEps), there is only $(cnt - 1) instances")
                 break
             end
+            lap = loadFromMM("uc.i$(i).eps$(curTargetEps).$(cnt)")
             a, _ = adj(lap)
             nv = size(a, 1)
             b = randn(nv)
