@@ -18,7 +18,7 @@ for i in 1:5
     println("---------------")
     println("n = $(n), i = $(i) started")
     println("---------------")
-    L = spzeros(n, n)
+
     for curTargetEps in epsInterval
         println("---------------")
         println("Current target eps $(curTargetEps)")

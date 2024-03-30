@@ -22,7 +22,7 @@ function timeLimitCmg(limit, la, b; tol::Real=1e-8, maxits=1000, verbose=false)
     fn = string(cd(pwd, ".."), "/", "matlab/timeCmg.m")
     mat = ENV["MATLAB_HOME"]
     matlab = "$(mat)/bin/matlab"
-    cmd = `timeout $(limit) $(matlab) -nojvm \< $(fn)`
+    cmd = `timeout $(limit) $(matlab) -nojvm -nodisplay -nosplash -nodesktop  \< $(fn)`
 
     t0 = now()
 
@@ -85,9 +85,10 @@ function timeLimitIcc(limit, la, b; tol::Real=1e-8, maxits=1000, verbose=false)
     fn = string(cd(pwd, ".."), "/", "matlab/timeIcc.m")
     mat = ENV["MATLAB_HOME"]
     matlab = "$(mat)/bin/matlab"
-    #cmd = `gtimeout $(limit) $(matlab) -nojvm \< $(fn)`
+    #cmd = `gtimeout $(limit) $(matlab) -nojvm -nodisplay -nosplash -nodesktop  \< $(fn)`
     # seems that gtimeout is not recognized?
-    cmd = `timeout $(limit) $(matlab) -nojvm \< $(fn)`
+    cmd = `timeout $(limit) $(matlab) -nojvm -nodisplay -nosplash -nodesktop \<  $(fn)`
+    
 
     t0 = now()
 
@@ -152,7 +153,7 @@ function timeLimitLamg(limit, la, b; tol::Real=1e-8, maxits=1000, verbose=false)
     fn = string(cd(pwd, ".."), "/", "matlab/timeLamg.m")
     mat = ENV["MATLAB_HOME"]
     matlab = "$(mat)/bin/matlab"
-    cmd = `timeout $(limit) $(matlab) -nojvm \< $(fn)`
+    cmd = `timeout $(limit) $(matlab) -nojvm -nodisplay -nosplash -nodesktop  \< $(fn)`
 
     t0 = now()
 
@@ -215,7 +216,7 @@ function timeLimitLamgSddm(limit, la, b; tol::Real=1e-8, maxits=1000, verbose=fa
     fn = string(cd(pwd, ".."), "/", "matlab/timeLamgSddm.m")
     mat = ENV["MATLAB_HOME"]
     matlab = "$(mat)/bin/matlab"
-    cmd = `timeout $(limit) $(matlab) -nojvm \< $(fn)`
+    cmd = `timeout $(limit) $(matlab) -nojvm -nodisplay -nosplash -nodesktop  \< $(fn)`
 
     t0 = now()
 
@@ -278,9 +279,9 @@ function timeLimitRchol(limit, la, b; tol::Real=1e-8, maxits=1000, verbose=false
     fn = string(cd(pwd, ".."), "/", "matlab/timeRchol.m")
     mat = ENV["MATLAB_HOME"]
     matlab = "$(mat)/bin/matlab"
-    #cmd = `gtimeout $(limit) $(matlab) -nojvm \< $(fn)`
+    #cmd = `gtimeout $(limit) $(matlab) -nojvm -nodisplay -nosplash -nodesktop  \< $(fn)`
     # seems that gtimeout is not recognized?
-    cmd = `timeout $(limit) $(matlab) -nojvm \< $(fn)`
+    cmd = `timeout $(limit) $(matlab) -nojvm -nodisplay -nosplash -nodesktop  \< $(fn)`
 
     t0 = now()
 
