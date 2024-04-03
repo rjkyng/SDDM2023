@@ -320,7 +320,7 @@ function testSddm(solvers, dic::Dict, sddmmat::SparseMatrixCSC{Tv,Ti}, b::Array{
             println("--------------")
             println("icc")
         end
-        ret = timeLimitIcc(tl, sddmmat, b, verbose = true);
+        ret = timeLimitIccSddm(tl, sddmmat, b, verbose = true);
         pushSpeedResult!(dic, "icc", ret)
     end
 

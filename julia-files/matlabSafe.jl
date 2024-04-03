@@ -8,7 +8,7 @@ using Laplacians
 using Dates
 using MAT
 
-function saveMAT(mat::SparseMatrixCSC, name, varname)
+function saveMAT(mat, name, varname)
     file = MAT.matopen(name, "w")
     write(file, varname, mat)
     close(file)
