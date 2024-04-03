@@ -489,7 +489,7 @@ function testLap(solvers, dic::Dict, a::SparseMatrixCSC{Tv,Ti}, b::Array{Tv,1};
             println("--------------")
             println("icc")
         end
-        ret = timeLimitIcc(tl, la, b, verbose = true);
+        ret = timeLimitIccLap(tl, la, b, verbose = true);
         pushSpeedResult!(dic, "icc", ret)
     end
 

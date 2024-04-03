@@ -1,4 +1,6 @@
 load fromJulia.mat
+la = load("fromJulia_la.mat").la;
+b = load("fromJulia_b.mat").b;
 
 startTime = datestr(now);
 st = Inf;
