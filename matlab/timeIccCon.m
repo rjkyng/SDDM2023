@@ -12,7 +12,7 @@ save toJulia st bt iter relres startTime
 
 bt = 0;
 st = 0;
-iter = Int(0);
+iter = 0;
 tic();
 
 n = length(la);
