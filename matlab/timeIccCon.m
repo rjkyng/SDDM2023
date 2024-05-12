@@ -45,7 +45,7 @@ for i = 1:numComponents
         bt = bt + toc();
 
         tic();
-        [xs, flag, relres, iterCon] = pcg(laConperm, b(componentIndices(p)), tol, maxits, LCon, LCon');
+        [xs, flag, relres, iterCon] = pcg(laConperm, b(componentIndices(p)), tol /numComponents, maxits, LCon, LCon');
         x(componentIndices(p)) =xs;
         iter = iter + iterCon;
         st = st + toc();
@@ -58,7 +58,7 @@ for i = 1:numComponents
         LConSub = ichol(laConSubperm);
 
         bt = bt + toc();
-        [xs, flag, relres, iterCon] = pcg(laConSubperm, b(componentIndices(p)), tol, maxits, LConSub, LConSub');
+        [xs, flag, relres, iterCon] = pcg(laConSubperm, b(componentIndices(p)), tol / numComponents, maxits, LConSub, LConSub');
         x(componentIndices(p)) = xs;
         x(componentIndices) = x(componentIndices) - mean(x(componentIndices));
         iter = iter + iterCon;

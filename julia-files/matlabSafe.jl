@@ -162,13 +162,13 @@ function timeLimitIccLap(limit, la, b; tol::Real=1e-8, maxits=1000, verbose=fals
     # lapdir = dirname(pathof(Laplacians))
     
     # fn = "$(lapdir)/../matlab/timeIcc.m"
-    fn = string(cd(pwd, ".."), "/", "matlab/timeIccCon.m")
+    fn = string(cd(pwd, ".."), "/", "matlab/timeIccLap.m")
     mat = ENV["MATLAB_HOME"]
     matlab = "$(mat)/bin/matlab"
     #cmd = `gtimeout $(limit) $(matlab) -nojvm -nodisplay -nosplash -nodesktop  \< $(fn)`
     # seems that gtimeout is not recognized?
     cmd = `timeout $(limit) $(matlab) -nojvm -nodisplay -nosplash -nodesktop \<  $(fn)`
-    
+    @show cmd
 
     t0 = now()
 
@@ -233,7 +233,7 @@ function timeLimitIccSddm(limit, la, b; tol::Real=1e-8, maxits=1000, verbose=fal
     # lapdir = dirname(pathof(Laplacians))
     
     # fn = "$(lapdir)/../matlab/timeIcc.m"
-    fn = string(cd(pwd, ".."), "/", "matlab/timeIccCon.m")
+    fn = string(cd(pwd, ".."), "/", "matlab/timeIcc.m")
     mat = ENV["MATLAB_HOME"]
     matlab = "$(mat)/bin/matlab"
     #cmd = `gtimeout $(limit) $(matlab) -nojvm -nodisplay -nosplash -nodesktop  \< $(fn)`
