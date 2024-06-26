@@ -436,7 +436,7 @@ function timeLimitRchol(limit, la, b; tol::Real=1e-8, maxits=1000, verbose=false
     # lapdir = dirname(pathof(Laplacians))
     
     # fn = "$(lapdir)/../matlab/timeIcc.m"
-    fn = string(cd(pwd, ".."), "/", "matlab/timeRchol.m")
+    fn = string(cd(pwd, ".."), "/", "matlab/timeRcholCon.m")
     mat = ENV["MATLAB_HOME"]
     matlab = "$(mat)/bin/matlab"
     #cmd = `gtimeout $(limit) $(matlab) -nojvm -nodisplay -nosplash -nodesktop  \< $(fn)`
