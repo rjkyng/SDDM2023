@@ -62,3 +62,57 @@ function timeLimitHypre(limit, M, b; verbose=false, num_procs=1, tol=1e-8)
 
     return (st, bt, iter, err)
 end
+
+
+function timeLimitHypreILUk(limit, M, b, k; verbose=false, num_procs=1, tol=1e-8)
+  # k is the level parameter for ILUk solver
+
+  
+  solverHome = ENV["HYPRE_HOME"]
+  scriptpath = "$(solverHome)/src/test/ij_print"
+  
+  matname = "tmpFromJulia_mat.txt"
+  vecname = "tmpFromJulia_vec.txt"
+
+  juliaSaveMatrixVector(matname,M,vecname,b)
+
+  tmpOutFileName_relres = "relres.out"
+  tmpOutFileName_setuptime = "setup.timing.out"
+  tmpOutFileName_solvetime = "solve.timing.out"
+
+  bt = Inf
+  st = Inf
+  err = Inf
+  iter = Inf
+
+  #cmd = `gtimeout $(limit) $(scriptpath) --verbose=false --muelu-xml=$(scripxmlsettings) --tol=1e-6 --max-iters=$(maxits) --filepath=$(matpath) --rhsfile=$(vecpath) --outputfile=$(tmpOutFileName)`
+
+  cmd = `timeout $(limit) mpirun -np $(num_procs) $(scriptpath) -solver 43 -level $(k) -fromonecsrfile $(matname) -rhsfromonefile $(vecname) -print -tol $(tol)`
+  
+  try
+      run(cmd)
+      
+      bt = CSV.read(tmpOutFileName_setuptime, DataFrame; header=false)[1,1]
+      st = CSV.read(tmpOutFileName_solvetime, DataFrame;header=false)[1,1]
+      iter = CSV.read("pcgiter.out", DataFrame; header=false)[1,1]
+      err = CSV.read(tmpOutFileName_relres, DataFrame;header=false)[1,1]
+      # nnz = CSV.read("precond_nnz.out", DataFrame;header=false)[1,1]
+  catch e
+      errtrace = backtrace()
+      msg = sprint(showerror, e, errtrace)
+      println(msg)
+      println("Hypre script died")
+  end
+      
+  if verbose
+    println("Build Time: ", bt)
+    println("Solve Time: ", st)
+    println("Iterations: ", iter)
+    println("error: ", err)
+    # println("nnz: ", nnz)
+    #d1 = DateTime(start,"d-u-yyyy H:M:S")
+    #println("Time to load and start Matlab: $(d1-DateTime(t0))/1000)")
+  end
+
+  return (st, bt, iter, err, nnz)
+end

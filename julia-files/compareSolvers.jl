@@ -121,6 +121,74 @@ function speedTestLapSolvers(solvers, dic, a::SparseMatrixCSC{Tv,Ti}, b::Array{T
 
 end
 
+"""
+    function speedTestSddmSolvers{Tv,Ti}(solvers, dic, a::SparseMatrixCSC{Tv,Ti}, b::Array{Tv,1}; tol::Real=1e-2, maxits=Inf, maxtime=Inf, verbose=false)
+
+Runs many Sddm solvers.  Puts the build and solve time results into a dictionary dic.  It would be easiest to look at it via DataFrame(dic).  Returns the answer from the last solver.  `solvers` should be an array of `SolverTest`.
+"""
+function speedTestSddmSolvers(solvers, dic, sddmmat::SparseMatrixCSC{Tv,Ti}, b::Array{Tv,1}; tol::Real=1e-2, maxits=10000, maxtime=1000, verbose=false, testName="") where {Tv,Ti}
+
+    b = b .- mean(b)
+
+    # la = lap(a)
+
+    it = Int[1]
+
+    # init the dict, if it is the first time
+    initDictCol!(dic, "nv", Int)
+    initDictCol!(dic, "ne", Int)
+    # initDictCol!(dic, "hash_a", UInt64)
+    initDictCol!(dic, "testName", String)
+    
+    solvecol(name) = "$(name)_solve"
+    buildcol(name) = "$(name)_build"
+    totcol(name) = "$(name)_tot"
+    itscol(name) = "$(name)_its"
+    errcol(name) = "$(name)_err"
+
+    dic["names"] = [t.name for t in solvers]
+
+    for solver in solvers
+        name = solver.name
+        initDictCol!(dic, solvecol(name), Float64)
+        initDictCol!(dic, buildcol(name), Float64)
+        initDictCol!(dic, totcol(name), Float64)
+        initDictCol!(dic, itscol(name), Float64)
+        initDictCol!(dic, errcol(name), Float64)
+    end
+
+    nv = size(sddmmat,1)
+    ne = nnz(sddmmat)
+    # hash_a = hash(sddmmat)
+
+    push!(dic["nv"],nv)
+    push!(dic["ne"],ne)
+    # push!(dic["hash_a"],hash_a)
+    push!(dic["testName"],testName)
+    
+    x = []
+
+    for i in 1:length(solvers)
+        solverTest = solvers[i]
+
+        if verbose
+            println()
+            println(solverTest.name)
+        end
+
+        ret = testSolverSddm(solverTest.solver, sddmmat, b, tol, maxits, verbose)
+
+        if i == 1
+            x = ret[5]
+        end
+        
+        
+        pushSpeedResult!(dic, solverTest.name, ret)
+    end
+
+    return x
+
+end
 
 function testSolver(solver, a, b, tol, maxits, verbose)
 
@@ -181,10 +249,12 @@ function testSolverSddm(solver, M, b, tol, maxits, verbose)
       return (Inf, Inf, Inf, Inf, Inf)
     end
   
-  end
+end
 
 
-"""
+
+
+  """
 Runs many Laplacians solvers.  Puts the build and solve time results into a dictionary dic.  It would be easiest to look at it via DataFrame(dic).  Returns the answer from the last solver.  `solvers` should be an array of `SolverTest`.
 
 Also compares them against the solvers we have in matlab, with a time limit of 10x the first solver here.
@@ -193,7 +263,7 @@ Also compares them against the solvers we have in matlab, with a time limit of 1
 function testSddm(solvers, dic::Dict, sddmmat::SparseMatrixCSC{Tv,Ti}, b::Array{Tv,1};
    tol::Real = 1e-8, maxits = 1000, maxtime = 1000, verbose = false, testName = "",
    test_petsc_hypre = false, test_hypre = false, test_icc = false, test_cmg = false, 
-   test_lamg = false, test_rchol = false, tl_fac = 10) where {Tv,Ti}
+   test_lamg = false, test_rchol = false, test_iluk=false, ks=[nothing], tl_fac = 10) where {Tv,Ti}
  
     it = Int[1]
 
@@ -232,6 +302,12 @@ function testSddm(solvers, dic::Dict, sddmmat::SparseMatrixCSC{Tv,Ti}, b::Array{
 
     if test_rchol
         push!(dic["names"], "rchol")
+    end
+
+    if test_iluk
+        for k in ks
+            push!(dic["names"], "iluk$(k)")
+        end
     end
 
     # if test_jlcmg
@@ -342,6 +418,17 @@ function testSddm(solvers, dic::Dict, sddmmat::SparseMatrixCSC{Tv,Ti}, b::Array{
         pushSpeedResult!(dic, "rchol", ret)
     end
 
+    if test_iluk
+        for k in ks
+            if verbose
+                println("--------------")
+                println("iluk$(k)")
+            end
+            ret = timeLimitHypreILUk(tl, sddmmat, b, k, verbose = true);
+            pushSpeedResult!(dic, "iluk$(k)", ret)
+        end
+    end
+
     # if test_jlcmg
     #     if verbose
     #         println("--------------")
@@ -362,7 +449,7 @@ Handles the case where the input matrix is not of full rank. The input matrix is
 function testLap(solvers, dic::Dict, a::SparseMatrixCSC{Tv,Ti}, b::Array{Tv,1};
     tol::Real = 1e-8, maxits = 1000, maxtime = 1000, verbose = false, testName = "",
     test_petsc_hypre = false, test_hypre = false, test_icc = false, test_cmg = false, 
-    test_lamg = false, test_rchol = false, tl_fac = 10) where {Tv,Ti}
+    test_lamg = false, test_rchol = false,  test_iluk=false, ks =[nothing],tl_fac = 10) where {Tv,Ti}
     
     b = b .- mean(b)
     la = Laplacians.lap(a)
@@ -404,6 +491,12 @@ function testLap(solvers, dic::Dict, a::SparseMatrixCSC{Tv,Ti}, b::Array{Tv,1};
 
     if test_rchol
         push!(dic["names"], "rchol")
+    end
+
+    if test_iluk
+        for k in ks
+            push!(dic["names"], "iluk$(k)")
+        end
     end
 
     # if test_jlcmg
@@ -511,6 +604,16 @@ function testLap(solvers, dic::Dict, a::SparseMatrixCSC{Tv,Ti}, b::Array{Tv,1};
         pushSpeedResult!(dic, "rchol", ret)
     end
 
+    if test_iluk
+        for k in ks
+            if verbose
+                println("--------------")
+                println("iluk")
+            end
+            ret = timeLimitHypreILUk(tl, la, b, k, verbose = true);
+            pushSpeedResult!(dic, "iluk$(k)", ret)
+        end
+    end
     # if test_jlcmg
     #     if verbose
     #         println("--------------")
