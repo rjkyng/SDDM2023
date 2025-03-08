@@ -14,14 +14,14 @@ using DelimitedFiles
 
 function juliaSaveMatrixVector(filename_matrix, M, filename_vector, b)
     # filename_matrix and filename_vector should include suffix
-    num_rows = M.m 
+    num_rows = copy(M.m)
     #@show M.colptr
     #@show M.rowval
     #@show M.nzval
     #exit()
-    colptr = M.colptr
-    rowval = M.rowval
-    nzval = M.nzval
+    colptr = copy(M.colptr)
+    rowval =copy(M.rowval)
+    nzval = copy(M.nzval)
 
     # put the diagonal in front of each column
     for i in 1:num_rows
